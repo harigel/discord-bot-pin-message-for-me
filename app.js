@@ -6,8 +6,7 @@ client.on('ready', () => {
 });
 
 client.on('messageReactionAdd', async (messageReaction, user) => {
-  console.log(messageReaction._emoji.name);
-  if (messageReaction._emoji.name !== '📌') {
+  if (messageReaction.emoji.name !== '📌') {
     return;
   }
   if (!user.dmChannel) {
