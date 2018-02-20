@@ -1,0 +1,19 @@
+{
+  "name": "discord-pin-message-for-me",
+  "version": "0.0.1",
+  "description": "Discord BOT that pin message you want to keep in mind.",
+  "engines": {
+   "node": "7.7.2",
+   "npm": "4.1.2"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "arahari",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.0"
+  }
+}
