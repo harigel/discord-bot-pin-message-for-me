@@ -1,12 +1,14 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const botToken = process.env.DISCORD_BOT_TOKEN;
+const pinEmoji = process.env.DISCORD_BOT_PIN_EMOJI || '📌';
 
 client.on('ready', () => {
   console.log('I am ready!');
 });
 
 client.on('messageReactionAdd', async (messageReaction, user) => {
-  if (messageReaction.emoji.name !== '📌') {
+  if (messageReaction.emoji.name !== pinEmoji) {
     return;
   }
   if (!user.dmChannel) {
@@ -19,4 +21,4 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
   user.dmChannel.send(message);
 });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+client.login(botToken);
