@@ -20,9 +20,7 @@ async function dmPinnedMessage (messageReaction, user) {
 }
 
 function deleteDM(messageReaction, user) {
-  if (messageReaction.message.author === client.user && user !== client.user) {
-    messageReaction.message.delete();
-  }
+  messageReaction.message.delete();
 }
 
 client.on('ready', () => {
@@ -30,9 +28,12 @@ client.on('ready', () => {
 });
 
 client.on('messageReactionAdd', async (messageReaction, user) => {
+  if (user.bot) {
+    return;
+  }
   if (messageReaction.emoji.name === pinEmoji) {
     dmPinnedMessage(messageReaction, user);
-} else if (messageReaction.emoji.name === wastebasketEmoji) {
+  } else if (messageReaction.emoji.name === wastebasketEmoji) {
     deleteDM(messageReaction, user);
   }
 });
