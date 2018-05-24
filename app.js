@@ -8,6 +8,7 @@ async function dmPinnedMessage (messageReaction, user) {
   if (!user.dmChannel) {
     await user.createDM();
   }
+  let text = `${pinEmoji} message by <@${messageReaction.message.author.id}> in <#${messageReaction.message.channel.id}>/${messageReaction.message.guild.name} ${pinEmoji}\n${messageReaction.message.content}`;
   let messageOptions = {};
   messageOptions.embed = {
     author: {
@@ -15,15 +16,11 @@ async function dmPinnedMessage (messageReaction, user) {
       icon_url: messageReaction.message.author.avatarURL,
     },
     timestamp: new Date(messageReaction.message.createdTimestamp).toISOString(),
-    fields: [
-      { name: 'author', value: '<@' + messageReaction.message.author.id + '>', inline: true },
-      { name: 'channel', value: '<#' + messageReaction.message.channel.id + '>', inline: true },
-    ],
   };
   if (messageReaction.message.attachments.size > 0) {
     messageOptions.files = messageReaction.message.attachments.map(attachment => attachment.url);
   }
-  let dmMessage = await user.dmChannel.send(pinEmoji + '\n' + messageReaction.message.content, messageOptions);
+  let dmMessage = await user.dmChannel.send(text, messageOptions);
   dmMessage.react(wastebasketEmoji);
 }
 
