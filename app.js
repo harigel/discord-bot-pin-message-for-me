@@ -8,15 +8,23 @@ async function dmPinnedMessage (messageReaction, user) {
   if (!user.dmChannel) {
     await user.createDM();
   }
-  let time = new Date(messageReaction.message.createdTimestamp).toISOString().replace(/T/, ' ').replace(/\..+/, '');
-  let info = time + '(UTC)' + ' <@' + messageReaction.message.author.id + '> ' + 'in <#' + messageReaction.message.channel.id + '>';
-  let message = '[' + info + '] ' + messageReaction.message.content;
-  let attachments = [];
-  for (const [key, attachment] of messageReaction.message.attachments) {
-    attachments.push(attachment.url);
+  let messageOptions = {};
+  messageOptions.embed = {
+    author: {
+      name: messageReaction.message.author.username,
+      icon_url: messageReaction.message.author.avatarURL,
+    },
+    timestamp: new Date(messageReaction.message.createdTimestamp).toISOString(),
+    fields: [
+      { name: 'author', value: '<@' + messageReaction.message.author.id + '>', inline: true },
+      { name: 'channel', value: '<#' + messageReaction.message.channel.id + '>', inline: true },
+    ],
+  };
+  if (messageReaction.message.attachments.size > 0) {
+    messageOptions.files = messageReaction.message.attachments.map(attachment => attachment.url);
   }
-  let messageSent = await user.dmChannel.send(message, {files: attachments});
-  messageSent.react(wastebasketEmoji);
+  let dmMessage = await user.dmChannel.send(pinEmoji + '\n' + messageReaction.message.content, messageOptions);
+  dmMessage.react(wastebasketEmoji);
 }
 
 function deleteDM(messageReaction, user) {
